@@ -1,0 +1,145 @@
+{% extends "ych_admin/index.html" %}
+
+{% block head_title %}
+YCH - Home Page
+{% endblock %}
+
+{% block content %}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">Home Page</h1>
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item active"><a href="/home-page/">Home Page</a></li>
+                    </ol>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Small boxes (Stat box) -->
+            <div class="row">
+                {% for hm in home_data %}
+                <div class="col-8">
+                    <div class="info-box mb-3">
+
+                    <div class="info-box-content-1">
+                        <span>
+                            <label>Title: </label> <p>{{ hm.home_title }}</p>
+                        </span>
+                        <span class="info-box-text-1">{{ hm.home_content}}</span>
+                        <br>
+                        <a href="/edit-home-page/{{hm.id}}/" id="editBtn"><i class="fa fa-edit"></i>Edit</a><br>
+                        <a type="button" id="deleteBtn" onclick="return deleteData('{{hm.id}}')"><i class="fa fa-trash"></i> Delete</a>
+                    </div>
+                    <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
+                </div>
+                <!-- /.col -->
+                
+                {% endfor %}
+                
+            </div>
+            <!-- /.row -->
+
+            <hr>
+            <div class="row">
+                <div class="col-4">
+                    
+                    <form action="" method="post" onsubmit="return checkHomepage();">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label>Add Title*</label>
+                            <input type="text" name="home_title" id="home_title" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Add Content*</label>
+                            <textarea name="home_content" id="home_content" cols="30" rows="10" class="form-control"></textarea>
+                            
+                        </div>
+                        <button type="submit" name="submit"class="btn btn-primary">Submit</button>
+                    </form>
+                    <br>
+                </div>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<!-- Check validation -->
+<script type="text/javascript">
+function checkHomepage(){
+    const home_title = document.getElementById("home_title").value;
+    const home_content = document.getElementById("home_content").value;
+    
+    if(home_title === "" || home_content === ""){
+        
+        swal("Try Again!", "Please enter value!", "error");
+        return false;
+    }
+}
+</script>
+
+<!-- Print Success Message -->
+{% if msg %}
+<script>
+    swal({title:"{{title}}", 
+        text:"{{msg}}", 
+        icon:"{{icon}}"
+    }).then(function(){
+        if("{{icon}}" == "success"){
+            window.location = '/home-page';
+        }
+        });
+</script>
+{% endif %}
+
+<!-- Print Delete Warning -->
+<script>
+function deleteData(hm_id){
+    const hom_id = hm_id;
+    console.log("Home_id="+hom_id);
+    swal({
+        title: "Are you sure?",
+        text: "Once deleted, you will not be able to recover this record!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    }).then((willDelete)=>{
+        if (willDelete) {
+                swal("Poof! Your record has been deleted!", {
+                icon: "success",
+            
+            }).then(function(){
+                return window.location = '/delete-home-page/'+hom_id+'/';
+            });
+            
+        } else {
+            swal("Your recorde is safe!").then(function(){
+                return window.location = '/home-page';
+            });
+            
+        }
+    });
+}
+</script>
+
+{% endblock %}

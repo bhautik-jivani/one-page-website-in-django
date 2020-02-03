@@ -1,0 +1,159 @@
+{% extends "ych_admin/index.html" %}
+
+{% block head_title %}
+YCH - Services
+{% endblock %}
+
+{% block content %}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">Services</h1>
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item active"><a href="/services/">Services</a></li>
+                    </ol>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Small boxes (Stat box) -->
+            <div class="row">
+                {% for service in services %}
+                <div class="col-8">
+                    <div class="info-box mb-3">
+
+                    <div class="info-box-content-1">
+                        <span>
+                            <label>Title: </label> <p>{{ service.service_title }}</p>
+                        </span>
+                        <span>
+                            <label>i tag: </label> 
+                            &nbsp;{{ service.service_i_tag }}
+                        </span>
+                        <span class="info-box-text-1">{{ service.service_content}}</span>
+                        
+                        <br>
+                        <a href="/edit-service/{{service.id}}/" id="editBtn"><i class="fa fa-edit"></i>Edit</a><br>
+                        <a type="button" id="deleteBtn" onclick="return deleteData('{{service.id}}')"><i class="fa fa-trash"></i> Delete</a>
+                    </div>
+                    <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
+                </div>
+                <!-- /.col -->
+                
+                {% endfor %}
+                
+            </div>
+            <!-- /.row -->
+
+            <hr>
+            <div class="row">
+                <div class="col-4">
+                    
+                    <form action="" method="post" onsubmit="return checkService();">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label>Add Title*</label>
+                            <input type="text" name="service_title" id="service_title" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Add i Tag</label>
+                            <input type="text" name="service_i_tag" id="service_i_tag" value="fas fa-cog" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Add Content*</label>
+                            <textarea name="service_content" id="service_content" cols="30" rows="10" class="form-control"></textarea>
+                            
+                        </div>
+                        <button type="submit" name="submit"class="btn btn-primary">Submit</button>
+                    </form>
+                    <br>
+                </div>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<!-- Check validation -->
+<script type="text/javascript">
+function checkService(){
+    const service_title = document.getElementById("service_title").value;
+    const service_content = document.getElementById("service_content").value;
+    const service_i_tag = document.getElementById("service_i_tag").value;
+
+    
+    if(service_title === "" || service_content === ""){
+        
+        swal("Try Again!", "Please enter value!", "error");
+        return false;
+    }
+    
+}
+</script>
+
+<!-- Print Success Message -->
+{% if msg %}
+<script>
+swal({title:"{{title}}", 
+        text:"{{msg}}", 
+        icon:"{{icon}}"
+    }).then(function(){
+        if("{{icon}}" == "success"){
+            window.location = '/services';
+        }
+        });
+</script>
+{% endif %}
+
+<!-- Print Delete Warning -->
+<script>
+function deleteData(service_id){
+    const srvice_id = service_id;
+    console.log("Service_id="+srvice_id);
+    swal({
+        title: "Are you sure?",
+        text: "Once deleted, you will not be able to recover this record!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    }).then((willDelete)=>{
+        if (willDelete) {
+            swal("Poof! Your record has been deleted!", {
+            icon: "success",
+            
+            }).then(function(){
+            return window.location = '/delete-service/'+srvice_id+'/';
+            });
+            
+            
+            
+        } else {
+            swal("Your recorde is safe!").then(function(){
+            return window.location = '/services';
+            });
+            
+        }
+    });
+}
+</script>
+
+{% endblock %}

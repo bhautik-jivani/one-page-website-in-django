@@ -1,0 +1,141 @@
+{% extends "ych_admin/index.html" %}
+
+{% block head_title %}
+YCH - About Us
+{% endblock %}
+
+{% block content %}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">About-Us</h1>
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item active"><a href="/about-us/">About-Us</a></li>
+                    </ol>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Small boxes (Stat box) -->
+            <div class="row">
+                {% for about in abouts %}
+                <div class="col-8">
+                    <div class="info-box mb-3">
+
+                    <div class="info-box-content-1">
+                        
+                        <span class="info-box-text-1">{{ about.about_content}}</span>
+                        
+                        <br>
+                        <a href="/edit-aboutus/{{about.id}}/" id="editBtn"><i class="fa fa-edit"></i>Edit</a><br>
+                        <a type="button" id="deleteBtn" onclick="return deleteData('{{about.id}}')"><i class="fa fa-trash"></i> Delete</a>
+                    </div>
+                    <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
+                </div>
+                <!-- /.col -->
+                
+                {% endfor %}
+                
+            </div>
+            <!-- /.row -->
+
+            <hr>
+            <div class="row">
+                <div class="col-4">
+                    
+                    <form action="" method="post" onsubmit="return checkAboutus();">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label>Add Content*</label>
+                            <textarea name="about_content" id="about_content" cols="30" rows="10" class="form-control">{% if request.POST %}{{ request.POST.about_content }} {% endif %}</textarea>
+                            
+                        </div>
+                        <button type="submit" name="submit"class="btn btn-primary">Submit</button>
+                    </form>
+                    <br>
+                </div>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<!-- Check validation -->
+<script type="text/javascript">
+function checkAboutus(){
+    const about_content = document.getElementById("about_content").value;
+    
+    if(about_content === ""){
+        
+        swal("Try Again!", "Please enter value!", "error");
+        return false;
+    }   
+}
+</script>
+
+<!-- Print Success Message -->
+{% if msg %}
+<script>
+swal({title:"{{title}}", 
+        text:"{{msg}}", 
+        icon:"{{icon}}"
+    }).then(function(){
+        if("{{icon}}" == "success"){
+            window.location = '/about-us';
+        }
+        });
+</script>
+{% endif %}
+
+<!-- Print Delete Warning -->
+<script>
+function deleteData(about_id){
+    const ab_id = about_id;
+    console.log("About_id="+ab_id);
+    swal({
+        title: "Are you sure?",
+        text: "Once deleted, you will not be able to recover this record!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    }).then((willDelete)=>{
+        if (willDelete) {
+            swal("Poof! Your record has been deleted!", {
+            icon: "success",
+            
+            }).then(function(){
+            return window.location = '/delete-aboutus/'+ab_id+'/';
+            });
+            
+            
+            
+        } else {
+            swal("Your recorde is safe!").then(function(){
+            return window.location = '/about-us';
+            });
+            
+        }
+    });
+}
+</script>
+
+{% endblock %}

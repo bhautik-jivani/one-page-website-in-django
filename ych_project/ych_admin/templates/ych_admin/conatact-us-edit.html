@@ -1,0 +1,109 @@
+{% extends "ych_admin/index.html" %}
+
+{% block head_title %}
+YCH - Edit Contact-Us
+{% endblock %}
+
+{% block content %}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">Edit Contact-Us</h1>
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item active"><a href="/edit-contactus/">Edit Contact-Us</a></li>
+                    </ol>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+    
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">       
+
+            <div class="row">
+                <div class="col-4">
+                   
+                    <form action="/update-contactus/{{contact.id}}/" method="post" onsubmit="return checkContactus();">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label>Edit Contact Title*</label>
+                            <input type="text" name="contact_title" id="contact_title" value="{{ contact.contact_title }}" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Edit Contact Number*</label>
+                            <input type="text" name="contact_num" id="contact_num" maxlength="10" value="{{ contact.contact_num }}"  class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Edit Address*</label>
+                            <textarea name="contact_address" id="contact_address" cols="30" rows="10" class="form-control">{{ contact.contact_address }}</textarea>
+                            
+                        </div>
+                        <button type="submit" name="submit"class="btn btn-primary">Submit</button>
+                    </form>
+                    <br>
+                </div>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<!-- Check validation -->
+<script type="text/javascript">
+function checkContactus(){
+    const contact_title = document.getElementById("contact_title").value;
+    const contact_num = document.getElementById("contact_num").value;
+    const contact_address = document.getElementById("contact_address").value;
+    
+    
+    if(contact_title == "" || contact_num == "" || contact_address == ""){
+        
+        swal("Try Again!", "Please enter value!", "error");
+        return false;
+    }
+    else if(contact_num != "")
+    {
+        if(!parseInt(contact_num)){
+            swal("Try Again!", "Please enter digits!", "error");
+            return false;
+        }
+        else if(contact_num.length < 10){
+            
+            swal("Try Again!", "Please enter 10 digits!", "error");
+            return false;
+        }   
+    }   
+}
+</script>
+
+<!-- Print Success Message -->
+{% if msg %}         
+<script>
+    swal({
+        title:"{{title}}", 
+        text:"{{msg}}", 
+        icon:"{{icon}}"
+    }).then(function(){
+        if("{{icon}}" == "success"){
+            window.location = '/contact-us';
+        }
+    });
+</script>
+{% endif %}
+
+
+{% endblock %}

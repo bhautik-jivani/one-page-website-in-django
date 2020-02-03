@@ -1,0 +1,136 @@
+{% extends "ych_admin/index.html" %}
+
+{% block head_title %}
+YCH - Menu
+{% endblock %}
+
+{% block content %}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">Menu</h1>
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item active"><a href="/menus/">Menu</a></li>
+                    </ol>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Small boxes (Stat box) -->
+            <div class="row">
+                {% for menu in menus %}
+                <div class="col-1">
+                    <div class="info-box mb-3">
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">{{ menu }}
+                            <a href="/edit-menu/{{menu.id}}/" id="editBtn"><i class="fa fa-edit"></i></a>
+                            <a type="button" id="deleteBtn" onclick="return deleteData('{{menu.id}}')"><i class="fa fa-trash"></i></a>
+                        </span>
+                    </div>
+                    <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
+                </div>
+                <!-- /.col -->
+                {% endfor %}
+                
+            </div>
+            <!-- /.row -->   
+            <hr>
+            <div class="row">
+                <div class="col-4">
+                    
+                    <form action="" method="post" onsubmit="return checkMenu();">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label>Add Menu*</label>
+                            <input type="text" name="menu" id="menu" class="form-control">
+                        </div>
+                        <button type="submit" name="submit"class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+
+<!-- Check validation -->
+<script type="text/javascript">
+function checkMenu(){
+    const menu = document.getElementById("menu").value;
+    
+    if (menu === ""){
+        
+        swal("Try Again!", "Please enter value!", "error");
+        return false;
+    }
+}
+</script>
+
+<!-- Print Success Message -->
+{% if msg %}
+<script>
+swal({title:"{{title}}", 
+        text:"{{msg}}", 
+        icon:"{{icon}}"
+    }).then(function(){
+        if("{{icon}}" == "success"){
+            window.location = '/menu';
+        }
+        });
+</script>
+{% endif %}
+
+<!-- Print Delete Warning -->
+<script>
+function deleteData(menu_id){
+    const m_id = menu_id;
+    console.log("Menu_id="+m_id);
+    swal({
+        title: "Are you sure?",
+        text: "Once deleted, you will not be able to recover this record!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    }).then((willDelete)=>{
+        if (willDelete) {
+            swal("Poof! Your record has been deleted!", {
+            icon: "success",
+            
+            }).then(function(){
+            return window.location = '/delete-menu/'+m_id+'/';
+            });
+            
+            
+            
+        } else {
+            swal("Your recorde is safe!").then(function(){
+            return window.location = '/menu';
+            });
+            
+        }
+    });
+}
+</script>
+{% endblock %}

@@ -1,0 +1,150 @@
+{% extends "ych_admin/index.html" %}
+
+{% block head_title %}
+YCH - Gallery
+{% endblock %}
+
+{% block content %}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">Gallery</h1>
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item active"><a href="/gallery/">Gallery</a></li>
+                    </ol>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Small boxes (Stat box) -->
+            <div class="row">
+                
+                {% for image in img_data %}
+                <div class="col-8">
+                    <div class="info-box mb-3">
+
+                    <div class="info-box-content-1">
+                        <span>
+                            <img src="/media/{{image.img}}" alt="">
+                        </span>
+                        <br>
+                        <a type="button" id="deleteBtn" onclick="return deleteData('{{image.id}}')"><i class="fa fa-trash"></i> Delete</a>
+                    </div>
+                    <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
+                </div>
+                <!-- /.col -->
+                
+                {% endfor %}
+                
+            </div>
+            <!-- /.row -->
+
+            <hr>
+            <div class="row">
+                <div class="col-4">
+                    
+                    <form action="" method="post" onsubmit="return val(this);" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label>Add Image*</label>
+                            <input type="file" name="image" id="image" accept="image/jpeg,image/png,image/jpg" class="form-control">
+                        </div>
+                        
+                        <button type="submit" name="submit"class="btn btn-primary">Submit</button>
+                    </form>
+                    <br>
+                    <br>
+                </div>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<!-- Check validation -->
+<script type="text/javascript">
+function val(obj){
+    const imges = document.getElementById("image").value;    
+    
+    if(imges == ""){
+        
+        swal("Try Again!", "Please select Image!", "error");
+        return false;
+    }
+    
+     console.log(type(imges));
+           
+    // var fileExtension = ['jpeg', 'jpg', 'png'];
+    // if ($.inArray($(obj).val().split('.').pop().toLowerCase(), fileExtension) == -1){
+    //     swal("Try Again!", "Only .jpeg,     .jpg, .png formats are allowed.", "error");
+    //     return false;
+    // }
+        
+    
+}
+</script>
+
+<!-- Print Success Message -->
+{% if msg %}
+<script>
+    swal({title:"{{title}}", 
+        text:"{{msg}}", 
+        icon:"{{icon}}"
+    }).then(function(){
+        if("{{icon}}" == "success"){
+            window.location = '/gallery';
+        }
+        });
+</script>
+{% endif %}
+
+<!-- Print Delete Warning -->
+<script>
+function deleteData(img_id){
+    const imgId = img_id;
+    swal({
+        title: "Are you sure?",
+        text: "Once deleted, you will not be able to recover this record!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    }).then((willDelete)=>{
+        if (willDelete) {
+                swal("Poof! Your record has been deleted!", {
+                icon: "success",
+            
+            }).then(function(){
+                return window.location = '/delete-gallery/'+imgId+'/';
+            });
+            
+        } else {
+            swal("Your recorde is safe!").then(function(){
+                return window.location = '/gallery';
+            });
+            
+        }
+    });
+}
+</script>
+
+{% endblock %}

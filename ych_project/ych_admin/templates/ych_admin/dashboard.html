@@ -1,0 +1,80 @@
+{% extends "ych_admin/index.html" %}
+
+{% block head_title %}
+YCH - Dashboard
+{% endblock %}
+
+{% block content %}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">Dashboard</h1>
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item">Home</li>
+                    <li class="breadcrumb-item active"><a href="/dashboard">Dashboard</a></li>
+                    </ol>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Small boxes (Stat box) -->
+            <div class="row">
+                <div class="col-8">
+                    <div class="info-box mb-3">
+
+                    <div class="info-box-content-1">
+                        <span>
+                            <label>User Name: </label> <p>{{ user_dtl.user_name }}</p>
+                        </span>
+                        <span>
+                            <label>User Email: </label> <p>{{ user_dtl.user_email }}</p>
+                        </span>
+                        
+                    </div>
+                    <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
+                </div>
+                <!-- /.col -->
+                
+            </div>
+            <!-- /.row -->
+
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+
+    
+</div>
+<!-- /.content-wrapper -->
+
+<!-- Print Success Message -->
+{% if msg %}
+<script>
+swal({title:"{{title}}", 
+        text:"{{msg}}", 
+        icon:"{{icon}}"
+    }).then(function(){
+        if("{{icon}}" == "success"){
+            window.location = '/dashboard';
+        }
+        });
+</script>
+{% endif %}
+{% endblock %}

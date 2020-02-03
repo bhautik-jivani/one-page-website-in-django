@@ -1,0 +1,201 @@
+{% extends "ych/base.html" %}
+
+{% block content %}
+{%	load static	%}
+
+{% include "ych/navbar.html" %}
+<!-- Top content -->
+<br>
+<div class="top-content">
+    <div class="container">
+    
+        <div class="row">
+            <div class="col-md-8 offset-md-2 text">
+                {% for datum in homeData %}
+                <h1 class="wow fadeInLeftBig">{{ datum.home_title }}</h1>
+            
+                <hr>
+                <div class="description wow fadeInLeftBig">
+                    <p>{{ datum.home_content }}</p>
+                </div>
+                {% endfor %}
+                
+                <div class="top-big-link wow fadeInUp">
+                    {% for  homebtn in homeButtons  %}
+                        <a class="{{ homebtn.home_btn_class }}" href="{{ homebtn.home_btn_link }}"> {{ homebtn.home_btn }}</a>
+                    {% endfor %}
+                    
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="backstretch" style="left: 0px; top: 0px; overflow: hidden; margin: 0px; padding: 0px; height: 678.8px; width: 1519.2px; z-index: -999998; position: absolute;">
+        <img src="{% static 'img/backgrounds/1.jpg' %}" style="position: absolute; margin: 0px; padding: 0px; border: none; width: 1519.2px; height: 1012.8px; max-height: none; max-width: none; z-index: -999999; left: 0px; top: -167px;">
+    </div>            
+</div>
+<!-- ./Top Content -->
+
+<!-- Services -->
+<div class="services-container section-container">
+    <div class="container">
+        <div class="row">
+            <div class="col services section-description wow fadeIn">
+                <h2>Our Services</h2>
+                <div class="divider-1 wow fadeInUp"><span></span></div>
+            </div>
+        </div>
+
+            
+        <div class="row">
+            {% for service in services %}
+                <div class="col-md-4 services-box wow fadeInUp">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="services-box-icon">
+                                <i class="{{ service.service_i_tag }}"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <h3>{{ service.service_title }}</h3>
+                            <p>{{ service.service_content }}</p>
+                        </div>
+                    </div>
+                </div>
+                
+            {% endfor %}
+        </div>
+            
+    </div>
+</div>
+<!-- ./Services -->
+
+<!-- Gallery -->
+<div class="gallery-container section-container">
+    <div class="container">
+        <div class="row">
+            <div class="col gallery section-description wow fadeIn">
+                <h2>Gallery</h2>
+                <div class="divider-1 wow fadeInUp"><span></span></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 gallery-box wow fadeInUp">
+                <div class="gallery-box-image">
+                    <img src="{% static 'img/portfolio/1.jpg' %}" alt="">
+                </div>
+            </div>
+            <div class="col-md-4 gallery-box wow fadeInDown">
+                <div class="gallery-box-image">
+                    <img src="{% static 'img/portfolio/2.jpg' %}" alt="">
+                </div>
+            </div>
+            <div class="col-md-4 gallery-box wow fadeInUp">
+                <div class="gallery-box-image">
+                    <img src="{% static 'img/portfolio/3.jpg' %}" alt="">
+                </div>
+            </div>
+
+            <div id="modal01" class="w3-modal" onclick="this.style.display='none'">
+
+                <div class="w3-modal-content w3-animate-zoom">
+                    <img id="img01" style="width:100%">
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<!-- About us -->
+<div class="about-us-container section-container section-container-gray-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-7 about-us-box wow fadeInLeft">
+                <div class="about-us-box-text">
+                    <h3>About Us</h3>
+                    {% for about in aboutus %}
+                        <p class="medium-paragraph">
+                            {{ about.about_content }}
+                        </p>
+                    {% endfor %}
+                    
+                </div>
+            </div>
+            <div class="col-12 col-lg-5 about-us-box wow fadeInUp">
+                <div class="about-us-box-img">
+                    <img src="{% static 'img/about/1.jpg' %}" alt="about">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Contact Us -->
+<div class="contact-us-container section-container">
+    <div class="container">
+        
+        <div class="row">
+            <div class="col contact-us section-description wow fadeIn">
+                <h2>Contact Us</h2>
+                <div class="divider-1 wow fadeInUp"><span></span></div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6 contact-us-box wow fadeInLeft">
+                <div class="row">
+                    {% for contact in contactus%}
+                    <div class="col-md-3">
+                        <div class="contact-us-box-image">
+                            <img src="{% static 'img/blog/2.jpg' %}" alt="" >
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        
+                        <h3><a href="#contact-us"> {{ contact.contact_title }}</a></h3>
+                        <p>
+                            <i class="fas fa-map-marker-alt fa-sm"></i>
+                            {{ contact.contact_address }}
+                        </p>
+                        <p>
+                            <i class="fas fa-phone fa-flip-horizontal fa-sm"></i>
+                            +91-{{contact.contact_num}}
+                        </p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-6 contact-us-box wow fadeInLeft">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="contact-us-box-image">
+                            <img src="{% static 'img/blog/3.jpg' %}" alt="" >
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <h3><a href="#">Contact Form</a></h3>
+                        <div class="contact-us-box-date"><i class="far fa-calendar"></i> {{ today }}</div>
+                        <form action="" method="post">
+                            <div class="form-group">
+                                Name
+                                <input type="text" name="name" id="name" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                Email
+                                <input type="email" name="email" id="email" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                Message
+                                <textarea name="message" id="message" cols="30" rows="10" class="form-control"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
